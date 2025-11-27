@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainBackground"
+    tools:context=".activitiese.BillPaymentsActivity">
+
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_margin="@dimen/_8sdp"
+        android:background="@drawable/ic_circle"
+        android:padding="@dimen/_6sdp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtMainHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:text="Bill Payments"
+        android:textSize="@dimen/_18sdp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnBack" />
+
+    <TextView
+        android:id="@+id/txtSubHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:text="Which bill do you want to Pay"
+        android:textColor="#1C1C3F"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtMainHeading" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clBillPayments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        app:layout_constraintTop_toBottomOf="@+id/txtSubHeading">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl1Bill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@drawable/bg_home_item"
+            app:layout_constraintEnd_toStartOf="@+id/clHaball"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv1Bill"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:src="@drawable/ic_1_bill"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txt1bill"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:gravity="center"
+            android:text="1 Bill"
+            android:textSize="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="@+id/cl1Bill"
+            app:layout_constraintStart_toStartOf="@+id/cl1Bill"
+            app:layout_constraintTop_toBottomOf="@+id/cl1Bill" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clHaball"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@drawable/bg_home_item"
+            app:layout_constraintEnd_toStartOf="@+id/clKuick"
+            app:layout_constraintStart_toEndOf="@+id/cl1Bill"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivHaball"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:src="@drawable/ic_haball"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txtHaball"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:gravity="center"
+            android:text="Haball"
+            android:textSize="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="@+id/clHaball"
+            app:layout_constraintStart_toStartOf="@+id/clHaball"
+            app:layout_constraintTop_toBottomOf="@+id/clHaball" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clKuick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@drawable/bg_home_item"
+            app:layout_constraintEnd_toStartOf="@+id/clGovernment"
+            app:layout_constraintStart_toEndOf="@+id/clHaball"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivKuick"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:src="@drawable/ic_kuick_pay"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txtKuick"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:gravity="center"
+            android:text="KuickPay"
+            android:textSize="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="@+id/clKuick"
+            app:layout_constraintStart_toStartOf="@+id/clKuick"
+            app:layout_constraintTop_toBottomOf="@+id/clKuick" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clGovernment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@drawable/bg_home_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/clKuick"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivGovernment"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:src="@drawable/ic_government"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txtGovernment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:gravity="center"
+            android:text="Government"
+            android:textSize="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="@+id/clGovernment"
+            app:layout_constraintStart_toStartOf="@+id/clGovernment"
+            app:layout_constraintTop_toBottomOf="@+id/clGovernment" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clDonations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@drawable/bg_home_item"
+            app:layout_constraintEnd_toEndOf="@id/cl1Bill"
+            app:layout_constraintStart_toStartOf="@id/cl1Bill"
+            app:layout_constraintTop_toBottomOf="@+id/txt1bill">
+
+            <ImageView
+                android:id="@+id/ivDonations"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:src="@drawable/ic_donations"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txtDonations"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:gravity="center"
+            android:text="Donations"
+            android:textSize="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="@+id/clDonations"
+            app:layout_constraintStart_toStartOf="@+id/clDonations"
+            app:layout_constraintTop_toBottomOf="@+id/clDonations" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clInsurance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@drawable/bg_home_item"
+            app:layout_constraintEnd_toEndOf="@id/clHaball"
+            app:layout_constraintStart_toStartOf="@id/clHaball"
+            app:layout_constraintTop_toBottomOf="@+id/txtHaball">
+
+            <ImageView
+                android:id="@+id/ivInsurance"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:src="@drawable/ic_insurance"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txtInsurance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:gravity="center"
+            android:text="Insurance"
+            android:textSize="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="@+id/clInsurance"
+            app:layout_constraintStart_toStartOf="@+id/clInsurance"
+            app:layout_constraintTop_toBottomOf="@+id/clInsurance" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/ivPoweredBy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="140dp"
+        android:src="@drawable/ic_powered_by"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

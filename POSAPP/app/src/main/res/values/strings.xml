@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">POS App</string>
+    <string name="please_pay_pin">Please Pay Pin</string>
+    <string name="connect_fail">connect to sdk fail, please exit to reconnect</string>
+    <string name="loading">Loading</string>
+    <string name="success">Success</string>
+
+    <string name="card_cost_hint">Please input correct cost amount</string>
+    <string name="requesting">Requesting</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="handling">Processing</string>
+
+    <string name="emv_swing_card_mag">Please swipe card</string>
+    <string name="emv_swing_card_ic">Please swipe card or insert card</string>
+    <string name="emv_confirm_card_no">Confirm card number</string>
+
+
+    <string name="emv_confirm_cert">Confirm certificate information</string>
+    <string name="emv_card_no_error">Get Card info error</string>
+    <string name="emv_app_select">Please select app</string>
+    <string name="emv_ic_process">NFC/IC Process</string>
+    <string name="emv_mag_process">Magnetic Process</string>
+    <string name="emv_visual_impairment_process">Visual impairment mode NFC/IC Process</string>
+    <string name="emv_read_rupay_card">Read Rupay card</string>
+    <string name="emv_toss_emv">Toss Emv</string>
+    <string name="emv_sred_test">Sred test</string>
+    <string name="emv_get_sred">Get sred</string>
+    <string name="emv_close_sred_by_sys_param">Close sred by SysParam</string>
+    <string name="emv_close_sred_by_set_account_data_sec_param">Close sred by invoke setAccountDataSecParam()</string>
+    <string name="emv_test_account_sec_data_with_mksk">Set and get account security data with mksk</string>
+    <string name="emv_test_account_sec_data_with_dukpt">Set and get account security data with dukpt</string>
+    <string name="emv_test_account_sec_data_with_rsa">Set and get account security data with RSA</string>
+    <string name="emv_other">EMV Others</string>
+    <string name="emv_query_ec_balance">QueryECBalance</string>
+    <string name="emv_remove_card">Please remove card&#8230;</string>
+    <string name="emv_get_terminal_send_apdu">Get terminal send apdu</string>
+    <string name="emv_terminal_send_apdu">Terminal send to card APDU:</string>
+    <string name="login_into_your_account">Login Into your Account</string>
+    <string name="login">Login</string>
+    <string name="please_enter_your_user_name">Enter Your Username</string>
+    <string name="please_enter_your_password">Enter Your Password</string>
+
+</resources>

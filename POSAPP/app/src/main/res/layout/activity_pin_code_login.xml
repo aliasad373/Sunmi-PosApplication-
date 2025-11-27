@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main"
+    android:background="@color/mainBackground">
+
+    <ImageView
+        android:id="@+id/ivMainTop"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/logoo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtMainHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/login_into_your_account"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivMainTop" />
+
+    <TextView
+        android:id="@+id/txtSubHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:text="Enter you Account PIN"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtMainHeading" />
+
+    <EditText
+        android:id="@+id/edtPinCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/edittext_line"
+        android:gravity="center"
+        android:focusable="false"
+        android:cursorVisible="false"
+        android:clickable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSubHeading" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clPinCode"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtPinCode">
+
+        <LinearLayout
+            android:id="@+id/llLineOne"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/btn1"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_circle"
+                android:gravity="center"
+                android:padding="@dimen/_12sdp"
+                android:text="1"
+                android:textStyle="bold"
+                android:textSize="@dimen/_22sdp" />
+
+            <TextView
+                android:id="@+id/btn2"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_circle"
+                android:gravity="center"
+                android:padding="@dimen/_12sdp"
+                android:text="2"
+                android:textStyle="bold"
+                android:textSize="@dimen/_22sdp" />
+
+            <TextView
+                android:id="@+id/btn3"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_circle"
+                android:gravity="center"
+                android:padding="@dimen/_12sdp"
+                android:text="3"
+                android:textStyle="bold"
+                android:textSize="@dimen/_22sdp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llLineTwo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llLineOne">
+
+            <TextView
+                android:id="@+id/btn4"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_circle"
+                android:gravity="center"
+                android:padding="@dimen/_12sdp"
+                android:text="4"
+                android:textStyle="bold"
+                android:textSize="@dimen/_22sdp" />
+
+            <TextView
+                android:id="@+id/btn5"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_circle"
+                android:gravity="center"
+                android:padding="@dimen/_12sdp"
+                android:text="5"
+                android:textStyle="bold"
+                android:textSize="@dimen/_22sdp" />
+
+            <TextView
+                android:id="@+id/btn6"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_circle"
+                android:gravity="center"
+                android:padding="@dimen/_12sdp"
+                android:text="6"
+                android:textStyle="bold"
+                android:textSize="@dimen/_22sdp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llLineThreee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llLineTwo">
+
+            <TextView
+                android:id="@+id/btn7"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_circle"
+                android:gravity="center"
+                android:padding="@dimen/_12sdp"
+                android:text="7"
+                android:textStyle="bold"
+                android:textSize="@dimen/_22sdp" />
+
+            <TextView
+                android:id="@+id/btn8"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_circle"
+                android:gravity="center"
+                android:padding="@dimen/_12sdp"
+                android:text="8"
+                android:textStyle="bold"
+                android:textSize="@dimen/_22sdp" />
+
+            <TextView
+                android:id="@+id/btn9"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_circle"
+                android:gravity="center"
+                android:padding="@dimen/_12sdp"
+                android:text="9"
+                android:textStyle="bold"
+                android:textSize="@dimen/_22sdp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btn0"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_circle"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:padding="@dimen/_12sdp"
+            android:text="0"
+            android:textStyle="bold"
+            android:textSize="@dimen/_22sdp"
+            app:layout_constraintTop_toBottomOf="@+id/llLineThreee"
+            app:layout_constraintStart_toStartOf="@+id/llLineThreee"
+            app:layout_constraintEnd_toEndOf="@+id/llLineThreee"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_32sdp"
+        android:background="@drawable/bg_button"
+        android:gravity="center"
+        android:paddingVertical="@dimen/_4sdp"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16sdp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/ivPoweredBy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintVertical_bias="0.9" />
+    <ImageView
+        android:id="@+id/ivPoweredBy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="140dp"
+        android:src="@drawable/ic_powered_by"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
