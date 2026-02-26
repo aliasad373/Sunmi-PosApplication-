@@ -28,7 +28,7 @@
         android:background="@drawable/bg_amount_enter"
         android:gravity="center"
         android:padding="15dp"
-        android:text="03056927627"
+        android:text="111-797-999"
         android:textColor="@color/black"
         android:textSize="27dp"
         android:textStyle="bold"

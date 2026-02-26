@@ -1,10 +1,18 @@
 package com.mindcrafts.posapp.activitiese.settlementreport;
 
+import static com.mindcrafts.posapp.app.BaseAppCompatActivity.TAG;
+import static com.mindcrafts.posapp.utils.Utility.showToast;
+
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +23,15 @@ import androidx.core.view.WindowInsetsCompat;
 import com.mindcrafts.posapp.R;
 import com.mindcrafts.posapp.activitiese.Home;
 import com.mindcrafts.posapp.activitiese.Settlement;
+import com.mindcrafts.posapp.app.MyApplication;
 import com.mindcrafts.posapp.database.DBInstance;
 import com.mindcrafts.posapp.database.entity.Transaction;
 import com.mindcrafts.posapp.databinding.ActivitySummeryReportBinding;
+import com.mindcrafts.posapp.databinding.SlipSummeryPrintBinding;
 import com.mindcrafts.posapp.iso8583.isoUtils.IsoUtils;
 import com.mindcrafts.posapp.storage.SharedPrefHelper;
+import com.mindcrafts.posapp.utils.LogUtil;
+import com.sunmi.peripheral.printer.InnerResultCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,12 +71,18 @@ public class SummeryReport extends AppCompatActivity {
                 finish();
             }
         });
+        binding.btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readyTheSlip();
+            }
+        });
         loadingSummer();
     }
 
     private void loadingSummer(){
         //base info
-        binding.textView14.setText("Shop #3 islamabad Workload");
+        binding.textView14.setText(SharedPrefHelper.getInstance(context).getAddress("address"));
         binding.textView16.setText(SharedPrefHelper.getInstance(this).getMID("MID"));
         binding.textView19.setText(SharedPrefHelper.getInstance(this).getTID("TID"));
         int batch = SharedPrefHelper.getInstance(this).getBatch("batch") -1;
@@ -172,6 +190,104 @@ public class SummeryReport extends AppCompatActivity {
         return map;
     };
 
+    private void readyTheSlip() {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        SlipSummeryPrintBinding binding1 = SlipSummeryPrintBinding.inflate(getLayoutInflater());
+        View view = binding1.getRoot();
+        binding1.tvMID.setText(SharedPrefHelper.getInstance(this).getMID("MID"));
+        binding1.TvTID.setText(SharedPrefHelper.getInstance(this).getTID("TID"));
+        int batch = SharedPrefHelper.getInstance(this).getBatch("batch") -1;
+        binding1.tvbatchNumber.setText(String.valueOf(batch));
+        //populating the data
+        binding1.tvSaleCol1.setText(masterCard.get("totalSettleCount"));
+        binding1.tvSaleCol2.setText(masterCard.get("totalAmountSettled"));
+        binding1.tvVoidCol1.setText(masterCard.get("totalVoidCount"));
+        binding1.tvVoidCol2.setText(masterCard.get("totalVoidAmount"));
+        //visa
+        binding1.tvSaleCol1Visa.setText(visaCard.get("totalSettleCount"));
+        binding1.tvSaleCol2Visa.setText(visaCard.get("totalAmountSettled"));
+        binding1.tvVoidCol1Visa.setText(visaCard.get("totalVoidCount"));
+        binding1.tvVoidCol2Visa.setText(visaCard.get("totalVoidAmount"));
+        //Paypake
+        binding1.tvSaleCol1Pay.setText(payPakCard.get("totalSettleCount"));
+        binding1.tvSaleCol2Pay.setText(payPakCard.get("totalAmountSettled"));
+        binding1.tvVoidCol1pay.setText(payPakCard.get("totalVoidCount"));
+        binding1.tvVoidCol2Pay.setText(payPakCard.get("totalVoidAmount"));
+        //union
+        binding1.tvSaleCol1UPI.setText(unionCard.get("totalSettleCount"));
+        binding1.tvSaleCol2UPI.setText(unionCard.get("totalAmountSettled"));
+        binding1.tvVoidCol1UPI.setText(unionCard.get("totalVoidCount"));
+        binding1.tvVoidCol2UPI.setText(unionCard.get("totalVoidAmount"));
+        //
+        binding1.tvAuthCol2Total.setText(GrandTotal.get("totalSettleCount"));
+        binding1.tvSaleCol2Total.setText(GrandTotal.get("totalVoidCount"));
+        binding1.tvVoidCol2Total.setText(GrandTotal.get("totalAmountSettled"));
 
+
+
+        // Measure and layout the view
+        view.measure(
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+
+        Bitmap bitmap = Bitmap.createBitmap(
+                view.getMeasuredWidth(),
+                view.getMeasuredHeight(),
+                Bitmap.Config.ARGB_8888);
+
+        // Draw the view onto the canvas
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+
+        printBitmap(bitmap);
+    }
+
+    private void printBitmap(Bitmap content) {
+        try {
+            if (MyApplication.app.sunmiPrinterService == null) {
+                showToast("Print not supported");
+                return;
+            }
+
+            Bitmap bitmap = content;
+//            bitmap = getBinaryzationBitmap(bitmap);
+
+            MyApplication.app.sunmiPrinterService.enterPrinterBuffer(true);
+            MyApplication.app.sunmiPrinterService.printBitmap(bitmap, new InnerResultCallback() {
+                @Override
+                public void onRunResult(boolean isSuccess) throws RemoteException {
+                    //addEndTime("printBitmap()");
+                    LogUtil.e(TAG, "onRunResult-->isSuccess:" + isSuccess);
+                    //showSpendTime();
+                }
+
+                @Override
+                public void onReturnString(String result) throws RemoteException {
+                    //addEndTime("printBitmap()");
+                    LogUtil.e(TAG, "onReturnString-->result:" + result);
+                    //showSpendTime();
+                }
+
+                @Override
+                public void onRaiseException(int code, String msg) throws RemoteException {
+                    //addEndTime("printBitmap()");
+                    LogUtil.e(TAG, "onRaiseException-->code:" + code + ",msg:" + msg);
+                    //showSpendTime();
+                }
+
+                @Override
+                public void onPrintResult(int code, String msg) throws RemoteException {
+                    //addEndTime("printBitmap()");
+                    LogUtil.e(TAG, "onPrintResult-->code:" + code + ",msg:" + msg);
+                    //showSpendTime();
+                }
+            });
+            MyApplication.app.sunmiPrinterService.lineWrap(4, null);
+            MyApplication.app.sunmiPrinterService.exitPrinterBuffer(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -1,5 +1,10 @@
 package com.mindcrafts.posapp.iso8583.builder;
 
+import android.os.Build;
+import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+
 import com.mindcrafts.posapp.database.entity.Transaction;
 import com.mindcrafts.posapp.iso8583.isoUtils.IsoConfig;
 import com.mindcrafts.posapp.iso8583.isoUtils.IsoUtils;
@@ -19,16 +24,19 @@ public class Void {
     public Void(Transaction transaction){
         this.transaction = transaction;
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public byte[] createVoid(){
         TPDU = ByteUtil.hexStr2Bytes(IsoConfig.TPDU);
         MTI = ByteUtil.hexStr2Bytes(IsoConfig.mti_200);
         String STAN = transaction.TC;
         String STAN_2 = STAN.substring(2);
-        String DE60 =  IsoUtils.paddMIDTID(IsoConfig.mti_200 + transaction.TC + transaction.date + transaction.time) + transaction.RRN;
+        String date = IsoUtils.getMonthDay(transaction.time);
+        String time = IsoUtils.combineTime(transaction.date);
+        String DE60 =  "0032" +  IsoUtils.paddMIDTID(IsoConfig.mti_200 + STAN_2  + date + time) + transaction.RRN;
         String exp = IsoUtils.dropLastTwo(transaction.expDate);
         Map<Integer, byte[]> fields = new TreeMap<>();
         fields.put(2, IsoUtils.getPanforVoid(transaction.PAN));
-        fields.put(3, ByteUtil.hexStr2Bytes(IsoConfig.process_Code));
+        fields.put(3, ByteUtil.hexStr2Bytes(IsoConfig.Process_Code_void));
         fields.put(4, ByteUtil.hexStr2Bytes(transaction.Amount));
         fields.put(11, ByteUtil.hexStr2Bytes(STAN_2));
         fields.put(12, ByteUtil.hexStr2Bytes(transaction.TransactionTime));

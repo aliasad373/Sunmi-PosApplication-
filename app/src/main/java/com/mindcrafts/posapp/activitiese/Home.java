@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -23,8 +24,10 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import com.bumptech.glide.util.Util;
 import com.mindcrafts.posapp.R;
 import com.mindcrafts.posapp.activitiese.inventory.InventoryHome;
+import com.mindcrafts.posapp.activitiese.reprint.Reprint;
 import com.mindcrafts.posapp.app.MyApplication;
 import com.mindcrafts.posapp.client.ApiClient;
 import com.mindcrafts.posapp.client.ApiService;
@@ -33,12 +36,15 @@ import com.mindcrafts.posapp.client.models.Configrequest;
 import com.mindcrafts.posapp.client.models.LoginRequest;
 import com.mindcrafts.posapp.client.models.LoginResponse;
 import com.mindcrafts.posapp.client.models.ServerTransaction;
+import com.mindcrafts.posapp.client.models.getTokenReq;
+import com.mindcrafts.posapp.client.models.getTokenResponse;
 import com.mindcrafts.posapp.database.DAO;
 import com.mindcrafts.posapp.database.DBInstance;
 import com.mindcrafts.posapp.database.entity.Transaction;
 import com.mindcrafts.posapp.databinding.ActivityHomeBinding;
 import com.mindcrafts.posapp.iso8583.isoUtils.IsoUtils;
 import com.mindcrafts.posapp.storage.SharedPrefHelper;
+import com.mindcrafts.posapp.utils.Utility;
 import com.mindcrafts.posapp.workers.DataSyncWorker;
 import com.mindcrafts.posapp.workers.InventoryUpdateWorker;
 
@@ -53,8 +59,9 @@ public class Home extends AppCompatActivity {
    ActivityHomeBinding binding;
   /*  String MID = "267142799700121";
     String TID = "26420121";*/
-    int type = 1;
+    int type = 0;
     Context context;
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,12 +82,16 @@ public class Home extends AppCompatActivity {
         binding.tvMid.setText("MID: " + SharedPrefHelper.getInstance(this).getMID("MID"));
         binding.tvTid.setText("TID: " + SharedPrefHelper.getInstance(this).getTID("TID"));
         binding.mName.setText("Hi " + SharedPrefHelper.getInstance(this).getMerchant("merchant"));
+        binding.timeStamp.setText(Utility.getCurrentTimestamp());
+        //
+        initMerchantType();
         //
         binding.sales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, EnterAmountV2.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -89,6 +100,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, AllTransactionActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         binding.settlement.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +108,15 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, Settlement.class);
                 startActivity(intent);
+                finish();
+            }
+        });
+        binding.reprint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, Reprint.class);
+                startActivity(intent);
+                finish();
             }
         });
         binding.helpLine.setOnClickListener(new View.OnClickListener() {
@@ -104,19 +125,56 @@ public class Home extends AppCompatActivity {
                 showHelplineDialog();
             }
         });
+
         binding.BOPCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Home.this, InventoryHome.class);
-                intent.putExtra("type", type);
-                startActivity(intent);
+                if(type == 3){
+                    Intent intent = new Intent(Home.this, EnterAmountV2.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Intent intent = new Intent(Home.this, InventoryHome.class);
+                    intent.putExtra("type", type);
+                    startActivity(intent);
+                    finish();
+                }
+
             }
         });
-
+     binding.settings.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+             Intent intent = new Intent(Home.this, Settings.class);
+             startActivity(intent);
+         }
+     });
         //
         getToken();
         ScheduleDataSync();
         //SyncTransaction();
+    }
+
+    private void initMerchantType(){
+        type = SharedPrefHelper.getInstance(context).getMerchantType("mType");
+        if(type == 1){
+            binding.constraintLayout20.setVisibility(View.GONE);
+        }else{
+            if(type == 2){
+                binding.constraintLayout20.setVisibility(View.GONE);
+                binding.teBOPCard.setText("Livestock card");
+            }else{
+                if(type == 3){
+                    binding.constraintLayout20.setVisibility(View.GONE);
+                    binding.teBOPCard.setText("Ration Card");
+                }else{
+                    if(type == 0){
+                        binding.BOPCard.setVisibility(View.GONE);
+                        binding.constraintLayout20.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -177,15 +235,16 @@ public class Home extends AppCompatActivity {
     }
 
     private void getToken(){
-     LoginRequest request = new LoginRequest("operator", "Secret@123", "POS");
+     getTokenReq request = new getTokenReq(SharedPrefHelper.getInstance(context).getTID("TID"),
+             SharedPrefHelper.getInstance(context).getMID("MID"));
      APICall(request);
     }
 
-    public void APICall(LoginRequest request){
+    public void APICall(getTokenReq request){
         ApiService api = ApiClient.getClient().create(ApiService.class);
-        api.login(request).enqueue(new Callback<LoginResponse>() {
+        api.getToken(request).enqueue(new Callback<getTokenResponse>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+            public void onResponse(Call<getTokenResponse> call, Response<getTokenResponse> response) {
                 if(response.code() == 200){
                    String token =  response.body().getToken();
                    SharedPrefHelper.getInstance(context).saveToken("token",token);
@@ -197,7 +256,7 @@ public class Home extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
+            public void onFailure(Call<getTokenResponse> call, Throwable t) {
               Log.d("Token", "Token Fetch failed");
             }
         });

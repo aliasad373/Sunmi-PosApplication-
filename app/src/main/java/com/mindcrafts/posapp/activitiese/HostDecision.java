@@ -128,7 +128,7 @@ public class HostDecision extends AppCompatActivity  {
         if(!cartData.isEmpty()){
             callForInventoryPurchase(cartData);
         }
-        //readyTheSlip(Tran);
+        readyTheSlip(Tran);
     }
     public void save_data(Transaction Tran) {
         new Thread(() -> {

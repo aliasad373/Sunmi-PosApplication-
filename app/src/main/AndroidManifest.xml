@@ -29,6 +29,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activitiese.reprint.ReprintActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activitiese.reprint.Reprint"
+            android:exported="false" />
+        <activity
+            android:name=".activitiese.Settings"
+            android:exported="false" />
+        <activity
             android:name=".activitiese.inventory.InventoryHome"
             android:exported="false" />
         <activity

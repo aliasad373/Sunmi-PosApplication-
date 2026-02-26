@@ -1,11 +1,14 @@
 package com.mindcrafts.posapp.activitiese;
 
+import static com.google.android.material.internal.ViewUtils.hideKeyboard;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -41,6 +44,9 @@ public class Configuration extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        binding.main.setOnClickListener(v -> {
+            hideKeyboard();
+        });
         Intent intent = getIntent();
         String token = intent.getStringExtra("token");
         String Serialnumber = "";
@@ -50,7 +56,11 @@ public class Configuration extends AppCompatActivity {
         binding.btnConfigure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               configureTerminal(token);
+                if(binding.etUserName.getText().toString().isEmpty()){
+                    Toast.makeText(getBaseContext(), "Please input serial number! ", Toast.LENGTH_LONG).show();
+                }else{
+                    configureTerminal(token);
+                }
             }
         });
         binding.btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -75,11 +85,17 @@ public class Configuration extends AppCompatActivity {
                     String BusinessName = response.body().getMerchantDetails().getBusinessName();
                     String MerchantName = response.body().getMerchantDetails().getMerchantName();
                     String Address = response.body().getMerchantDetails().getAddress();
+                    int merchantType = response.body().getMerchantDetails().getFlag();
+                    String posType = response.body().getPosType();
                     //setting up parameters
+                    Log.d("POStype", posType);
+                    Log.d("merchant type", String.valueOf(merchantType));
                     SharedPrefHelper.getInstance(context).saveMID("MID", MID);
                     SharedPrefHelper.getInstance(context).saveTID("TID", TID);
                     SharedPrefHelper.getInstance(context).saveBusinessName("bname", BusinessName);
                     SharedPrefHelper.getInstance(context).saveMerchantName("merchant", MerchantName);
+                    SharedPrefHelper.getInstance(context).savePosType("pos", posType);
+                    SharedPrefHelper.getInstance(context).saveMerchantType("mType", merchantType);
                     Log.d("Adress", Address);
                     SharedPrefHelper.getInstance(context).saveAddress("address", Address);
                     runOnUiThread(new Runnable() {
@@ -119,5 +135,13 @@ public class Configuration extends AppCompatActivity {
              });
             }
         });
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm =
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        }
     }
 }

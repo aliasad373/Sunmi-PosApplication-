@@ -1,9 +1,13 @@
 package com.mindcrafts.posapp.utils;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 
@@ -266,5 +270,18 @@ public final class Utility {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return now.format(formatter);
     }
+
+    public static String getCleanAmount(String amount) {
+        if (amount == null || amount.length() != 12 || !amount.matches("\\d+")) {
+            throw new IllegalArgumentException("Invalid amount format");
+        }
+
+        long value = Long.parseLong(amount);
+        double result = value / 100.0;
+
+        return String.format("%.2f", result);
+    }
+
+
 
 }

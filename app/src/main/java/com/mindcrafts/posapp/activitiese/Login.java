@@ -3,8 +3,10 @@ package com.mindcrafts.posapp.activitiese;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,12 +16,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.mindcrafts.posapp.R;
+import com.mindcrafts.posapp.app.MyApplication;
 import com.mindcrafts.posapp.client.ApiClient;
 import com.mindcrafts.posapp.client.ApiService;
 import com.mindcrafts.posapp.client.models.LoginRequest;
 import com.mindcrafts.posapp.client.models.LoginResponse;
 import com.mindcrafts.posapp.databinding.ActivityLoginBinding;
 import com.mindcrafts.posapp.storage.SharedPrefHelper;
+import com.sunmi.pay.hardware.aidlv2.AidlConstantsV2;
+import com.sunmi.pay.hardware.aidlv2.system.BasicOptV2;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +34,8 @@ public class Login extends AppCompatActivity {
 
     ActivityLoginBinding binding;
     Context context;
+    private boolean isPassVisible;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +48,55 @@ public class Login extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        binding.main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              hideKeyboard();
+            }
+        });
         //
        LoginUser();
+       binding.showHidePass.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               showHidePassword();
+           }
+       });
+
+       //entre kisok mode
+
+        //
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!MyApplication.app.isConnectPaySDK()) {
+            Log.d("PayService", "Payservice called");
+            MyApplication.app.bindPaySDKService();
+        }
+    }
+
+    private void showHidePassword() {
+        binding.showHidePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isPassVisible) {
+                    binding.etPassword.setInputType(
+                            InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    );
+                    binding.showHidePass.setImageResource(R.drawable.hide_pass);
+                } else {
+                    binding.etPassword.setInputType(
+                            InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    );
+                    binding.showHidePass.setImageResource(R.drawable.show_pass);
+                }
+
+                isPassVisible = !isPassVisible;
+                binding.etPassword.setSelection(binding.etPassword.length());
+            }
+        });
     }
 
 
@@ -52,7 +106,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 //
                 String userName = binding.etUserName.getText().toString();
-                String password = binding.etPass.getText().toString();
+                String password = binding.etPassword.getText().toString();
                 if(userName.equals("01") && password.equals("01")){
                     String MID = SharedPrefHelper.getInstance(context).getMID("MID");
                     String TID = SharedPrefHelper.getInstance(context).getTID("TID");
@@ -78,6 +132,7 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
 
     public void APICall(LoginRequest request){
         ApiService api = ApiClient.getClient().create(ApiService.class);
@@ -121,4 +176,12 @@ public class Login extends AppCompatActivity {
         });
 
     }
+    private void hideKeyboard() {
+        InputMethodManager imm =
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
+
 }

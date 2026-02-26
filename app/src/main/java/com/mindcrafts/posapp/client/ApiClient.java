@@ -8,7 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
     private static Retrofit retrofit = null;
     public static Retrofit getClient() {
-        String baseUrl= "http://203.175.74.144:2000/";
+       // String baseUrl= "http://203.175.74.144:2000/";
+        String baseUrl= "https://pos.digikhata.pk/";
         if (retrofit == null) {
 
             // Create logging interceptor

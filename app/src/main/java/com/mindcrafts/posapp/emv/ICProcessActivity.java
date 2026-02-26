@@ -1,5 +1,6 @@
 package com.mindcrafts.posapp.emv;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -368,7 +369,9 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
     public void onClick(View v) {
         final int id = v.getId();
         if(id == R.id.btnCancel){
-            finish();
+           Intent intent = new Intent(ICProcessActivity.this, Home.class);
+           startActivity(intent);
+           finish();
         }
     }
 
@@ -380,10 +383,10 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
             // set PayPass(MasterCard) tlv data
             String[] tagsPayPass = {"DF8117", "DF8118", "DF8119", "DF811F", "DF811E", "DF812C",
                     "DF8123", "DF8124", "DF8125", "DF8126",
-                    "DF811B", "DF811D", "DF8122", "DF8120", "DF8121"};
-            String[] valuesPayPass = {"E0", "F8", "F0", "C8", "00", "00",
-                    "000000000000", "000002000000", "999999999999", "000000200000",
-                    "B0", "02", "F45084800C", "F45084800C", "0000000000"};
+                    "DF811B", "DF811D", "DF8122", "DF8120", "DF8121","9F1D" };
+            String[] valuesPayPass = {"E0", "F0", "08", "C8", "00", "00",
+                    "000000000000", "000002000000", "999999999999", "000000030000",
+                    "B0", "02", "F45084800C", "F45084800C", "0000000000","6C6C800000000000"};
             mEMVOptV2.setTlvList(AidlConstantsV2.EMV.TLVOpCode.OP_PAYPASS, tagsPayPass, valuesPayPass);
 
             // set AMEX(AmericanExpress) tlv data
@@ -886,7 +889,7 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
             byte[] panBytes = mCardNo.substring(mCardNo.length() - 13, mCardNo.length() - 1).getBytes("US-ASCII");
             pinPadConfig.setPan(panBytes);
             pinPadConfig.setTimeout(60 * 1000); // input password timeout
-            pinPadConfig.setPinKeyIndex(12);    // pik index
+            pinPadConfig.setPinKeyIndex(11);    // pik index
             pinPadConfig.setMaxInput(12);
             pinPadConfig.setMinInput(0);
             pinPadConfig.setKeySystem(0);
@@ -1086,7 +1089,7 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
         try {
             String[] tagList = {
                     "DF02", "5F34", "9F06", "FF30", "FF31", "95", "9B", "9F36", "9F26",
-                    "9F27", "DF31", "5A", "57", "5F24", "9F1A", "9F33", "9F35", "9F40",
+                    "9F27", "DF31", "5A", "57", "5F24", "9F1A", "9F33", "9F35", "9F40","9F6E",
                     "9F03", "9F10", "9F37", "9C", "9A", "9F02", "5F2A", "82", "9F34", "9F1E",
                     "84", "4F", "9F66", "9F6C", "9F09", "9F41", "9F63", "5F20", "9F12", "50",
             };
@@ -1138,9 +1141,15 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
             //country code
             TLV countryCode = new TLV("5F2A", 02, "0586");
 
+            TLV _9b  = new TLV("9B", 02, "0000");
+
+            TLV cvm  = new TLV("9F34", 03, "1F0302");
+
             //
             map.put("5A",PanProccesed);
             map.put("5F2A", countryCode);
+            map.put("9B", _9b);
+            map.put("9F34", cvm);
              //
             //dismissLoadingDialog();
           /*  Gson gson = new Gson();
@@ -1206,11 +1215,49 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
 
 
     public void networkCall(Map<String, TLV> map, String pinBlock){
-        Sales builder = new Sales();
-        byte[] message200 = builder.create200(map, MID, TID, Objects.requireNonNullElse(pinBlock, ""));
-        Log.d("message200", ByteUtil.bytes2HexStr(message200));
-        NetworkUtil util = new NetworkUtil();
-        util.HostCall(message200, callback);
+        String pan  = map.get("5A").getValue();
+        int type = SharedPrefHelper.getInstance(context).getMerchantType("mType");
+        if(pan.contains("54197547") && type == 1 || pan.contains("559049001815") || pan.contains("22057700")){
+            Sales builder = new Sales();
+            byte[] message200 = builder.create200(map, MID, TID, Objects.requireNonNullElse(pinBlock, ""));
+            Log.d("message200", ByteUtil.bytes2HexStr(message200));
+            NetworkUtil util = new NetworkUtil();
+            util.HostCall(message200, callback);
+        }else{
+         if(pan.contains("52382103") && type == 2){
+             Sales builder = new Sales();
+             byte[] message200 = builder.create200(map, MID, TID, Objects.requireNonNullElse(pinBlock, ""));
+             Log.d("message200", ByteUtil.bytes2HexStr(message200));
+             NetworkUtil util = new NetworkUtil();
+             util.HostCall(message200, callback);
+         }else{
+             if(pan.contains("52871657") && type == 3){
+                 Sales builder = new Sales();
+                 byte[] message200 = builder.create200(map, MID, TID, Objects.requireNonNullElse(pinBlock, ""));
+                 Log.d("message200", ByteUtil.bytes2HexStr(message200));
+                 NetworkUtil util = new NetworkUtil();
+                 util.HostCall(message200, callback);
+             }else{
+               if(type == 0){
+                   Sales builder = new Sales();
+                   byte[] message200 = builder.create200(map, MID, TID, Objects.requireNonNullElse(pinBlock, ""));
+                   Log.d("message200", ByteUtil.bytes2HexStr(message200));
+                   NetworkUtil util = new NetworkUtil();
+                   util.HostCall(message200, callback);
+               }else{
+                   runOnUiThread(new Runnable() {
+                       @Override
+                       public void run() {
+
+                           showErrorDialog(ICProcessActivity.this,context, "Card is not allowed");
+                       }
+                   });
+
+               }
+             }
+         }
+        }
+
     }
 
     private void resetUI() {
@@ -1330,9 +1377,9 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
          @RequiresApi(api = Build.VERSION_CODES.O)
          @Override
          public void run() {
-            //String resp  = ByteUtil.bytes2HexStr(response);
-             //Log.d("server210", resp);
-             String test = "003260000000200210203801000E8000000000000001011700050915020030303031303120202020202031323334353630303431313130303438";
+            String resp  = ByteUtil.bytes2HexStr(response);
+             // Log.d("server210", resp);
+             //String test = "003260000000200210203801000E8000000000000001011700050915020030303031303120202020202031323334353630303431313130303438";
              Map<Integer, Integer> fields = new HashMap<>();
              fields.put(3, 2);
              fields.put(11, 4);
@@ -1343,7 +1390,7 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
              fields.put(38, 6);
              fields.put(39, 2);
              fields.put(41, 8);
-             resp210 = ISOParser.parseMessage(ByteUtil.hexStr2Bytes(test), fields);
+             resp210 = ISOParser.parseMessage(ByteUtil.hexStr2Bytes(resp), fields);
              LogUtil.d("message210", resp210.toString());
              if (Objects.equals(resp210.get("Field_39"), "3030")) {
                  binding.textView8.setText("ٹرانزیکشن مکمل ہو گئی، کارڈ ہٹا لیں۔");
@@ -1440,7 +1487,11 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
             entryMode = IsoConfig.entryMode_pin;
         }
         String cardScheme = TLVUtil.getCardTypeByAID(TLVMap.get("4F").getValue());
-        Tran = new Transaction(msg_320, MID, TID, batch,
+        Tran = new Transaction(
+                msg_320,
+                MID,
+                TID,
+                batch,
                 resp210.get("Field_38"),
                 resp210.get("Field_39"),
                 TLVMap.get("9F02").getValue(),
@@ -1483,6 +1534,7 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
                 Gson gson = new Gson();
                 String jsonString = gson.toJson(Tran);
                 Intent intent = new Intent(ICProcessActivity.this, HostDecision.class);
+                Log.d("transaction before slip", jsonString);
                 intent.putExtra("Tran", jsonString);
                 intent.putExtra("amount", amount);
                 intent.putExtra("cart", cartProducts);
@@ -1519,7 +1571,26 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
 
     }
     //reversal Call
-    private void sendReversal(){
 
+    public static void showErrorDialog(Activity activity, Context context, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Info");
+        builder.setMessage(message);
+        builder.setCancelable(false); // prevent closing by tapping outside
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss(); // closes the dialog
+                Intent intent = new Intent(activity, Home.class);
+                activity.startActivity(intent);
+                activity.finish();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
+    private void sendReversal(){
+        
+         }
 }

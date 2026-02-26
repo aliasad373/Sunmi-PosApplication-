@@ -11,11 +11,18 @@ public class ConfigResponse {
     private String TID;
     private List<String> supported_aids;
     private List<Card> cards;
+
+    public String posType;
+
     private MerchantDetails merchantDetails;
 
     // Getters and Setters
     public boolean isSuccess() {
         return isSuccess;
+    }
+
+    public String getPosType(){
+        return  posType;
     }
 
     public void setSuccess(boolean success) {
@@ -82,8 +89,11 @@ public class ConfigResponse {
         private String PhoneNumber;
         private String Email;
         private String Address;
-
+        private int flag;
         // Getters and Setters
+        public int getFlag(){
+            return  flag;
+        }
         public String getMID() {
             return MID;
         }

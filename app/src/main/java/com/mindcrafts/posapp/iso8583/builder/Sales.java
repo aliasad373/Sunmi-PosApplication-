@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Sales {
-    List<String> selected = Arrays.asList("5F2A", "5F34", "82", "84", "95", "9A", "9C", "9F09", "9F02", "9F03", "9F10", "9F1A", "9F1E", "9F26", "9F27", "9F33", "9F35", "9F36", "9F37", "4F", "9F41");
+    List<String> selected = Arrays.asList("5F2A", "5F34", "82", "84", "95", "9A", "9C","9B","9F09", "9F02","9F03", "9F10", "9F1A", "9F1E", "9F26", "9F27", "9F33","9F34","9F35", "9F36", "9F37", "4F", "9F41");
     byte[] DE55;
     byte[] TPDU;
     byte[] MTI;

@@ -97,4 +97,18 @@ public class SharedPrefHelper {
         return sharedPreferences.getString(key, "");
     }
 
+    public void savePosType(String key, String value){
+        editor.putString(key, value).apply();
+    }
+
+    public String getPosType(String key){
+        return sharedPreferences.getString(key, "");
+    }
+
+    public void saveMerchantType(String key, int value){editor.putInt(key, value).apply();
+    }
+
+    public int getMerchantType (String key){return sharedPreferences.getInt(key, 0);
+    }
+
 }

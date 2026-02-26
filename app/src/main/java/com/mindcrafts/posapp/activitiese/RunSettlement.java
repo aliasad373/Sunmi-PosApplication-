@@ -2,12 +2,14 @@ package com.mindcrafts.posapp.activitiese;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -30,6 +32,7 @@ import com.mindcrafts.posapp.network.callback.NetworkCallback;
 import com.mindcrafts.posapp.storage.SharedPrefHelper;
 import com.mindcrafts.posapp.utils.ByteUtil;
 import com.mindcrafts.posapp.utils.LoadingDialog;
+import com.mindcrafts.posapp.utils.Utility;
 import com.mindcrafts.posapp.view.LoadingDialogNew;
 
 import java.util.ArrayList;
@@ -52,6 +55,7 @@ public class RunSettlement extends AppCompatActivity implements AllTransactionAd
     String TID;
     List<byte[]> batch;
     LoadingDialogNew dialogNew;
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +69,7 @@ public class RunSettlement extends AppCompatActivity implements AllTransactionAd
         dialogNew = new LoadingDialogNew(this);
         binding.tvMid.setText("MID: " + SharedPrefHelper.getInstance(this).getMID("MID"));
         binding.tvTid.setText("TID: " + SharedPrefHelper.getInstance(this).getTID("TID"));
+        binding.textView12.setText("Today: " + Utility.getCurrentTimestamp());
         batch = new ArrayList<>();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

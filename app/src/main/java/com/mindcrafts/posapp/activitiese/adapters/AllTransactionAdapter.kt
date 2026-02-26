@@ -26,6 +26,8 @@ class AllTransactionAdapter : RecyclerView.Adapter<AllTransactionAdapter.Transac
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
         val item = items[position]
         holder.binding.amount.text =  IsoUtils.getClearAmount(item.Amount);
+        holder.binding.invoice.text = item.TC
+        holder.binding.RRN.text = IsoUtils.hexToAscii(item.RRN).trim()
         holder.binding.PAN.text = IsoUtils.maskedPAN(item.PAN)
         holder.binding.datetime.text = item.date + " " + item.time
         holder.binding.root.setOnClickListener {

@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clReceipt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/bg_reciept"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:src="@drawable/logoo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout24"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clReceipt">
+
+            <TextView
+                android:id="@+id/MID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MID"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvMID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="123456789876567"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout26"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout24">
+
+            <TextView
+                android:id="@+id/TID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TID"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/TvTID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="12345678"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout27"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout26">
+
+            <TextView
+                android:id="@+id/batch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Batch No."
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvbatchNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="000005"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/view6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout27" />
+
+        <TextView
+            android:id="@+id/textView31"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Summery Report"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view6" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout29"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView31">
+
+            <TextView
+                android:id="@+id/textView32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Card Name: Master Card"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout28"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView32">
+
+                <!-- ===== Row 1 ===== -->
+                <TextView
+                    android:id="@+id/tvAuth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Auth-conf"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAuthCol1"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/tvAuthCol1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAuthCol2"
+                    app:layout_constraintStart_toEndOf="@id/tvAuth"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <TextView
+                    android:id="@+id/tvAuthCol2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvAuthCol1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <!-- ===== Row 2 ===== -->
+                <TextView
+                    android:id="@+id/tvSale"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Sale"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/tvSaleCol1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuth"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/tvSaleCol1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toStartOf="@+id/tvSaleCol2"
+                    app:layout_constraintStart_toEndOf="@id/tvSale"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthCol1"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <TextView
+                    android:id="@+id/tvSaleCol2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvSaleCol1"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthCol2"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <!-- ===== Row 3 ===== -->
+                <TextView
+                    android:id="@+id/tvVoid"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Void Sale"
+                    app:layout_constraintEnd_toStartOf="@+id/tvVoidCol1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvSale"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/tvVoidCol1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toStartOf="@+id/tvVoidCol2"
+                    app:layout_constraintStart_toEndOf="@id/tvVoid"
+                    app:layout_constraintTop_toBottomOf="@id/tvSaleCol1"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <TextView
+                    android:id="@+id/tvVoidCol2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvVoidCol1"
+                    app:layout_constraintTop_toBottomOf="@id/tvSaleCol2"
+                    app:layout_constraintWidth_percent="0.25" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout28" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout29">
+
+            <TextView
+                android:id="@+id/tv_header_visa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Card Name: Visa"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerVisa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_header_visa">
+
+                <!-- ===== Row 1 ===== -->
+                <TextView
+                    android:id="@+id/tvAuthVisa"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Auth-conf"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAuthCol1Visa"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/tvAuthCol1Visa"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAuthCol2Visa"
+                    app:layout_constraintStart_toEndOf="@id/tvAuthVisa"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <TextView
+                    android:id="@+id/tvAuthCol2Visa"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvAuthCol1Visa"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <!-- ===== Row 2 ===== -->
+                <TextView
+                    android:id="@+id/tvSaleVisa"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Sale"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/tvSaleCol1Visa"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthVisa"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/tvSaleCol1Visa"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toStartOf="@+id/tvSaleCol2Visa"
+                    app:layout_constraintStart_toEndOf="@id/tvSaleVisa"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthCol1Visa"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <TextView
+                    android:id="@+id/tvSaleCol2Visa"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvSaleCol1Visa"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthCol2Visa"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <!-- ===== Row 3 ===== -->
+                <TextView
+                    android:id="@+id/tvVoidVisa"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Void Sale"
+                    app:layout_constraintEnd_toStartOf="@+id/tvVoidCol1Visa"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvSaleVisa"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/tvVoidCol1Visa"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toStartOf="@+id/tvVoidCol2Visa"
+                    app:layout_constraintStart_toEndOf="@id/tvVoidVisa"
+                    app:layout_constraintTop_toBottomOf="@id/tvSaleCol1Visa"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <TextView
+                    android:id="@+id/tvVoidCol2Visa"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvVoidCol1Visa"
+                    app:layout_constraintTop_toBottomOf="@id/tvSaleCol2Visa"
+                    app:layout_constraintWidth_percent="0.25" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/containerVisa" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout31"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout30">
+
+            <TextView
+                android:id="@+id/tv_header_paypak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Card Name: Paypak"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerpure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_header_paypak">
+
+                <!-- ===== Row 1 ===== -->
+                <TextView
+                    android:id="@+id/tvAuthPay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Auth-conf"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAuthCol1Pay"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/tvAuthCol1Pay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAuthCol2Pay"
+                    app:layout_constraintStart_toEndOf="@id/tvAuthPay"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <TextView
+                    android:id="@+id/tvAuthCol2Pay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvAuthCol1Pay"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <!-- ===== Row 2 ===== -->
+                <TextView
+                    android:id="@+id/tvSalePay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Sale"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/tvSaleCol1Pay"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthPay"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/tvSaleCol1Pay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toStartOf="@+id/tvSaleCol2Pay"
+                    app:layout_constraintStart_toEndOf="@id/tvSalePay"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthCol1Pay"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <TextView
+                    android:id="@+id/tvSaleCol2Pay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvSaleCol1Pay"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthCol2Pay"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <!-- ===== Row 3 ===== -->
+                <TextView
+                    android:id="@+id/tvVoidPay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Void Sale"
+                    app:layout_constraintEnd_toStartOf="@+id/tvVoidCol1pay"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvSalePay"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/tvVoidCol1pay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toStartOf="@+id/tvVoidCol2Pay"
+                    app:layout_constraintStart_toEndOf="@id/tvVoidPay"
+                    app:layout_constraintTop_toBottomOf="@id/tvSaleCol1Pay"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <TextView
+                    android:id="@+id/tvVoidCol2Pay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvVoidCol1pay"
+                    app:layout_constraintTop_toBottomOf="@id/tvSaleCol2Pay"
+                    app:layout_constraintWidth_percent="0.25" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/containerpure" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout32"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout31">
+
+            <TextView
+                android:id="@+id/tv_header_upi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Card Name: Union Pay"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerUpi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_header_upi">
+
+                <!-- ===== Row 1 ===== -->
+                <TextView
+                    android:id="@+id/tvAuthUPI"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Auth-conf"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAuthCol1UPI"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/tvAuthCol1UPI"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAuthCol2UPI"
+                    app:layout_constraintStart_toEndOf="@id/tvAuthUPI"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <TextView
+                    android:id="@+id/tvAuthCol2UPI"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvAuthCol1UPI"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <!-- ===== Row 2 ===== -->
+                <TextView
+                    android:id="@+id/tvSaleUPI"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Sale"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/tvSaleCol1UPI"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthUPI"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/tvSaleCol1UPI"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toStartOf="@+id/tvSaleCol2UPI"
+                    app:layout_constraintStart_toEndOf="@id/tvSaleUPI"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthCol1UPI"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <TextView
+                    android:id="@+id/tvSaleCol2UPI"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvSaleCol1UPI"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthCol2UPI"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <!-- ===== Row 3 ===== -->
+                <TextView
+                    android:id="@+id/tvVoidUPI"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Void Sale"
+                    app:layout_constraintEnd_toStartOf="@+id/tvVoidCol1UPI"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvSaleUPI"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/tvVoidCol1UPI"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toStartOf="@+id/tvVoidCol2UPI"
+                    app:layout_constraintStart_toEndOf="@id/tvVoidUPI"
+                    app:layout_constraintTop_toBottomOf="@id/tvSaleCol1UPI"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <TextView
+                    android:id="@+id/tvVoidCol2UPI"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvVoidCol1UPI"
+                    app:layout_constraintTop_toBottomOf="@id/tvSaleCol2UPI"
+                    app:layout_constraintWidth_percent="0.25" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/containerUpi" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout32"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TextView
+                android:id="@+id/tv_header_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Grand Total: "
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_header_total">
+
+                <!-- ===== Row 1 ===== -->
+                <TextView
+                    android:id="@+id/tvAuthTotal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Sales"
+                    android:textSize="16sp"
+
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5" />
+
+
+
+                <TextView
+                    android:id="@+id/tvAuthCol2Total"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <!-- ===== Row 2 ===== -->
+                <TextView
+                    android:id="@+id/tvSaleTotal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Void"
+                    android:textSize="16sp"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthTotal"
+                    app:layout_constraintWidth_percent="0.5" />
+
+
+
+                <TextView
+                    android:id="@+id/tvSaleCol2Total"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthCol2Total"
+                    app:layout_constraintWidth_percent="0.25" />
+
+                <!-- ===== Row 3 ===== -->
+                <TextView
+                    android:id="@+id/tvVoidTotal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Total Amount"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvSaleTotal"
+                    app:layout_constraintWidth_percent="0.5" />
+
+
+
+                <TextView
+                    android:id="@+id/tvVoidCol2Total"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvSaleCol2Total"
+                    app:layout_constraintWidth_percent="0.25" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/containerTotal" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

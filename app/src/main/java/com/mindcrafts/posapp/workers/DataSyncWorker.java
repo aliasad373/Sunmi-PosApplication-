@@ -44,19 +44,22 @@ public class DataSyncWorker extends Worker {
             int bacth = SharedPrefHelper.getInstance(getApplicationContext()).getBatch("batch")-1;
             DBInstance db = DBInstance.getInstance(getApplicationContext());
             DAO transactionDao = db.userDao();
-            List<Transaction> localDBTransactions = transactionDao.getUnsyncedTransactionsByBatchNumber(String.valueOf(bacth));
+            List<Transaction> localDBTransactions = transactionDao.getUnsyncedTransactions();
             if(!localDBTransactions.isEmpty()){
                 for (int i = 0; i<localDBTransactions.size(); i++){
                     Transaction trans = localDBTransactions.get(i);
-                    Boolean SettlementStatus = true;
+                    Boolean SettlementStatus = false;
                     if(trans.v_status.equals("1")){
                         SettlementStatus = false;
+                    }
+                    if(trans.s_status.equals("1")){
+                        SettlementStatus = true;
                     }
                     ServerTransaction transaction = new ServerTransaction(
                             trans.MID,
                             trans.TID ,
                             trans.batchNumber,
-                            trans.Amount,
+                            IsoUtils.getClearAmount( trans.Amount),
                             IsoUtils.maskedPAN(trans.PAN),
                             trans.TransactionTime,
                             trans.TransactionTime,

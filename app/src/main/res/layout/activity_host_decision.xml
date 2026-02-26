@@ -450,7 +450,7 @@
                         android:id="@+id/labelRNN"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="RNN :"
+                        android:text="RRN :"
                         android:textSize="@dimen/_10sdp" />
 
                     <TextView

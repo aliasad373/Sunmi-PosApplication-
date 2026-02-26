@@ -1,12 +1,17 @@
 package com.mindcrafts.posapp.activitiese.inventory;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -17,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mindcrafts.posapp.R;
 import com.mindcrafts.posapp.activitiese.EnterAmountV2;
+import com.mindcrafts.posapp.activitiese.Home;
 import com.mindcrafts.posapp.activitiese.adapters.InventoryAdapter;
 import com.mindcrafts.posapp.activitiese.adapters.callbacks.InventoryCallbacks;
 import com.mindcrafts.posapp.activitiese.inventory.models.CartProduct;
@@ -30,6 +36,8 @@ import com.mindcrafts.posapp.database.DBInstance;
 import com.mindcrafts.posapp.database.entity.InventoryEntity;
 import com.mindcrafts.posapp.databinding.ActivityInventoryHomeBinding;
 import com.mindcrafts.posapp.emv.ICProcessActivity;
+import com.mindcrafts.posapp.storage.SharedPrefHelper;
+import com.mindcrafts.posapp.utils.Utility;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -53,14 +61,30 @@ public class InventoryHome extends AppCompatActivity implements InventoryCallbac
     DAO transactionDao;
 
     int inventoryType;
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         binding = ActivityInventoryHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        binding.tvMid.setText("MID: " + SharedPrefHelper.getInstance(this).getMID("MID"));
+        binding.tvTid.setText("TID: " + SharedPrefHelper.getInstance(this).getTID("TID"));
+        binding.timeStamp.setText(Utility.getCurrentTimestamp());
+
         Intent intent = getIntent();
         inventoryType = intent.getIntExtra("type", 1);
+
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1  = new Intent(InventoryHome.this, Home.class);
+                startActivity(intent1);
+                finish();
+            }
+        });
         //db
          db = DBInstance.getInstance(getApplicationContext());
          transactionDao = db.userDao();
@@ -79,6 +103,12 @@ public class InventoryHome extends AppCompatActivity implements InventoryCallbac
            //loadLiveStockInventory();
 
          //
+        binding.main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideKeyboard();
+            }
+        });
         binding.btnProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +129,11 @@ public class InventoryHome extends AppCompatActivity implements InventoryCallbac
                     finish();
                 }
             }
+        });
+
+        binding.itemRecycler .setOnTouchListener((v, event) -> {
+            hideKeyboard();
+            return false; // allow RecyclerView to handle touch
         });
     }
 
@@ -247,5 +282,13 @@ public class InventoryHome extends AppCompatActivity implements InventoryCallbac
             transactionDao.insertInventory(inventory);
         }).start();
         loadInventory();
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm =
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        }
     }
 }

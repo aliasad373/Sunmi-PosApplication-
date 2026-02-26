@@ -5,6 +5,8 @@ import com.mindcrafts.posapp.client.models.Configrequest;
 import com.mindcrafts.posapp.client.models.LoginRequest;
 import com.mindcrafts.posapp.client.models.LoginResponse;
 import com.mindcrafts.posapp.client.models.ServerTransaction;
+import com.mindcrafts.posapp.client.models.getTokenReq;
+import com.mindcrafts.posapp.client.models.getTokenResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -22,4 +24,6 @@ public interface ApiService {
     Call<Object> SaveTransactionToServer(@Header("Authorization") String token,  @Body ServerTransaction req);
 
 
+    @POST("api/getToken")
+    Call<getTokenResponse> getToken(@Body getTokenReq req);
 }

@@ -71,6 +71,8 @@ public class Settlement extends AppCompatActivity {
            }
        });
 
+       binding.constraintLayout6.setVisibility(GONE);
+
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

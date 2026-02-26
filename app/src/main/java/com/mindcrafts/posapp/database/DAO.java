@@ -57,4 +57,7 @@ public interface DAO {
 
     @Query("SELECT * FROM transactions WHERE batchNumber = :batchNumber AND isSynced = 0")
     List<Transaction> getUnsyncedTransactionsByBatchNumber(String batchNumber);
+
+    @Query("SELECT * FROM transactions WHERE isSynced = 0")
+    List<Transaction> getUnsyncedTransactions();
 }

@@ -1,12 +1,17 @@
 package com.mindcrafts.posapp.iso8583.isoUtils;
 
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.mindcrafts.posapp.utils.ByteUtil;
 import com.mindcrafts.posapp.utils.TLV;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -262,5 +267,13 @@ public static byte[] getPanforVoid(String PAN){
         return sb.toString();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String getMonthDay(String date) {
+        LocalDate localDate = LocalDate.parse(date);
+        return localDate.format(DateTimeFormatter.ofPattern("MMdd"));
+    }
 
+    public static String combineTime(String time) {
+        return time.replace(":", "");
+    }
 }

@@ -211,6 +211,8 @@ public final class TLVUtil {
             return "RuPay";
         } else if (aid.startsWith("A000000228")) {
             return "Maestro";
+        }else if (aid.startsWith("A0000007362")) {
+            return "PayPak";
         }
 
         return "Unknown";

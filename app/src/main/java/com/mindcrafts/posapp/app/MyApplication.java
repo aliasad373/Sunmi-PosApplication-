@@ -17,6 +17,7 @@ import com.mindcrafts.posapp.utils.Constant;
 import com.mindcrafts.posapp.utils.LogUtil;
 import com.mindcrafts.posapp.utils.Utility;
 import com.mindcrafts.posapp.wraper.CacheHelper;
+import com.sunmi.pay.hardware.aidlv2.AidlConstantsV2;
 import com.sunmi.pay.hardware.aidlv2.emv.EMVOptV2;
 import com.sunmi.pay.hardware.aidlv2.etc.ETCOptV2;
 import com.sunmi.pay.hardware.aidlv2.pinpad.PinPadOptV2;
@@ -127,6 +128,11 @@ public class MyApplication extends Application {
                 hceV2Wrapper = payKernel.mHCEManagerV2Wrapper;
                 rfidOptV2 = payKernel.mRFIDOptV2;
                 connectPaySDK = true;
+
+                setStatusBarDropDownMode(AidlConstantsV2.SystemUI.DISABLE_STATUS_BAR_DROP_DOWN);
+                setHideNavigationBarItems(AidlConstantsV2.SystemUI.HIDE_NAV_ITEM_BACK_KEY
+                        | AidlConstantsV2.SystemUI.HIDE_NAV_ITEM_HOME_KEY
+                        | AidlConstantsV2.SystemUI.HIDE_NAV_ITEM_RECENT_KEY);
             }
 
             @Override
@@ -151,6 +157,22 @@ public class MyApplication extends Application {
         });
     }
 
+
+    private void setStatusBarDropDownMode(int key) {
+        try {
+            basicOptV2.setStatusBarDropDownMode(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setHideNavigationBarItems(int key) {
+        try {
+            basicOptV2.setHideNavigationBarItems(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * bind printer service
      */
