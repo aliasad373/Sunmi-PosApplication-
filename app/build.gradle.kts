@@ -11,8 +11,8 @@ android {
         applicationId = "com.mindcrafts.posapp"
         minSdk = 24
         targetSdk = 35
-        versionCode = 9
-        versionName = "1.8"
+        versionCode = 12
+        versionName = "2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

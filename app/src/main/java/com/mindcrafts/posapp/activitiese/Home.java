@@ -152,7 +152,7 @@ public class Home extends AppCompatActivity {
         //
         getToken();
         ScheduleDataSync();
-        //SyncTransaction();
+       // SyncTransaction();
     }
 
     private void initMerchantType(){

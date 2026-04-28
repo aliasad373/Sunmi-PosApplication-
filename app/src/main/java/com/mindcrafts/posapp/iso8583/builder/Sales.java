@@ -19,13 +19,14 @@ public class Sales {
     byte[] TPDU;
     byte[] MTI;
     public Sales(){}
-    public byte[] create200(Map<String, TLV> map, String MID, String TID, String pinblock){
+    public byte[] create200(Map<String, TLV> map, String MID, String TID, String pinblock, boolean isRFID){
         DE55  = IsoUtils.DE55Builder(map, selected);
         TPDU = ByteUtil.hexStr2Bytes(IsoConfig.TPDU);
         MTI = ByteUtil.hexStr2Bytes(IsoConfig.mti_200);
         String STAN = map.get("9F41").getValue();
         String STAN_2 = STAN.substring(2);
-        byte[] DE62 = IsoUtils.DE62(map);
+        String raw_de62 = IsoUtils.DE62_with0();
+         byte[] DE62 = ByteUtil.hexStr2Bytes(raw_de62);
 
 
         Map<Integer, byte[]> fields = new TreeMap<>();
@@ -33,10 +34,18 @@ public class Sales {
         fields.put(3, ByteUtil.hexStr2Bytes(IsoConfig.process_Code));
         fields.put(4, ByteUtil.hexStr2Bytes(map.get("9F02").getValue()));
         fields.put(11, ByteUtil.hexStr2Bytes(STAN_2));
-        if(pinblock.isEmpty()){
-            fields.put(22,ByteUtil.hexStr2Bytes(IsoConfig.entryMode));
+        if(isRFID){
+            if(pinblock.isEmpty()){
+                fields.put(22,ByteUtil.hexStr2Bytes(IsoConfig.entryMode));
+            }else{
+                fields.put(22, ByteUtil.hexStr2Bytes(IsoConfig.entryMode_pin));
+            }
         }else{
-            fields.put(22, ByteUtil.hexStr2Bytes(IsoConfig.entryMode_pin));
+            if(pinblock.isEmpty()){
+                fields.put(22,ByteUtil.hexStr2Bytes(IsoConfig.entryModeContact));
+            }else{
+                fields.put(22, ByteUtil.hexStr2Bytes(IsoConfig.entryModeContactPin));
+            }
         }
         fields.put(24, ByteUtil.hexStr2Bytes(IsoConfig.NII));
         fields.put(25, ByteUtil.hexStr2Bytes(IsoConfig.POS_condtion_code));

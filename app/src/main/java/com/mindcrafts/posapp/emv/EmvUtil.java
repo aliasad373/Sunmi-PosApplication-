@@ -91,9 +91,12 @@ public final class EmvUtil {
                 LogUtil.e("KEY", "kkk FAIL");
             }
 */
+            //val clearTMK = "7CF161022AA75E0140D6451CA41A31C7" //test
+            //val encryptedTpk = utils.hexStringToByteArray("27688F614B25BED636FA3C176A8EA226")//test
             // result = mSecurityOptV2.saveTerminalKey();
             // save TMK
-            byte[] dataByte = ByteUtil.hexStr2Bytes("2979107FA4A740B96E04F7BA97D5A14F");
+            byte[] dataByte = ByteUtil.hexStr2Bytes("2979107FA4A740B96E04F7BA97D5A14F"); //prod
+            //byte[] dataByte = ByteUtil.hexStr2Bytes("7CF161022AA75E0140D6451CA41A31C7"); //test
             //result = mSecurityOptV2.saveCiphertextKey(AidlConstantsV2.Security.KEY_TYPE_TMK, dataByte, cvByte, 10, AidlConstantsV2.Security.KEY_ALG_TYPE_3DES, 11);
             result = mSecurityOptV2.savePlaintextKey(AidlConstantsV2.Security.KEY_TYPE_TMK, dataByte, cvByte, KEY_ALG_TYPE_3DES, 10);
             LogUtil.e(Constant.TAG, "save TMK result:" + result);
@@ -102,7 +105,8 @@ public final class EmvUtil {
             } else {
                 LogUtil.e("KEY", "KEK FAIL");
             }
-            byte[] dataByte1 = ByteUtil.hexStr2Bytes("39D3E1CC481A87A3985699F55018B72E");
+           byte[] dataByte1 = ByteUtil.hexStr2Bytes("39D3E1CC481A87A3985699F55018B72E"); // prod
+            //byte[] dataByte1 = ByteUtil.hexStr2Bytes("27688F614B25BED636FA3C176A8EA226"); // test
             // save PIK
             result = mSecurityOptV2.saveCiphertextKey(AidlConstantsV2.Security.KEY_TYPE_PIK, dataByte1, cvByte, 10,KEY_ALG_TYPE_3DES, 11);
             LogUtil.e(Constant.TAG, "save PIK result:" + result);

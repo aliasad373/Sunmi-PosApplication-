@@ -22,7 +22,8 @@ public class Batch {
         MTI = ByteUtil.hexStr2Bytes(IsoConfig.mti_320);
         String STAN = map.get("9F41").getValue();
         String STAN_2 = STAN.substring(2);
-        byte[] DE62 = IsoUtils.DE62(map);
+        String raw_de62 = IsoUtils.DE62_with0();
+        byte[] DE62 = ByteUtil.hexStr2Bytes(raw_de62);
 
 
         Map<Integer, byte[]> fields = new TreeMap<>();

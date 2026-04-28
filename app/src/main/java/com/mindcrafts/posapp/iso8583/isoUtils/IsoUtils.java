@@ -127,13 +127,20 @@ public static byte[] getPanforVoid(String PAN){
     public static byte[] track2Data(Map<String, TLV> map){
         TLV tlv_track2 = map.get("57");
         assert tlv_track2 != null;
+
         String track2data = tlv_track2.getValue();
+
+// Check if 'F' exists before replacing
         int lastF = track2data.lastIndexOf('F');
-        StringBuilder sb = new StringBuilder(track2data);
-        sb.setCharAt(lastF, '0');
-        track2data = sb.toString();
+        if (lastF != -1) {
+            StringBuilder sb = new StringBuilder(track2data);
+            sb.setCharAt(lastF, '0');
+            track2data = sb.toString();
+        }
+
         int size = track2data.length();
-        String _track2_with_length = String.valueOf(size-1) + track2data;
+        String _track2_with_length = String.valueOf(size - 1) + track2data;
+
         return ByteUtil.hexStr2Bytes(_track2_with_length);
     }
 
@@ -151,6 +158,15 @@ public static byte[] getPanforVoid(String PAN){
         data = "0006" + paddMIDTID(data);
         return  ByteUtil.hexStr2Bytes(data);
     }
+    public static String DE62_with0(){
+        String input = "000000";
+        StringBuilder result = new StringBuilder();
+        for (char c : input.toCharArray()) {
+            result.append("2").append(c);
+        }
+        return "0006" + result.toString();
+    }
+
 
     public static String dropFirstTwo(String input) {
         if (input == null || input.length() <= 2) {
@@ -276,4 +292,74 @@ public static byte[] getPanforVoid(String PAN){
     public static String combineTime(String time) {
         return time.replace(":", "");
     }
+
+    public static String extractTag91(String hex) {
+        // Step 1: Remove first 4 characters
+        String data = hex.substring(4);
+
+        int i = 0;
+
+        while (i < data.length()) {
+            // Step 2: Read tag (1 byte = 2 hex chars)
+            String tag = data.substring(i, i + 2);
+            i += 2;
+
+            // Step 3: Read length (1 byte)
+            String lengthHex = data.substring(i, i + 2);
+            int length = Integer.parseInt(lengthHex, 16);
+            i += 2;
+
+            // Step 4: Read value (length * 2 hex chars)
+            String value = data.substring(i, i + (length * 2));
+            i += length * 2;
+
+            // Step 5: Check for tag 91
+            if (tag.equalsIgnoreCase("91")) {
+                return value;
+            }
+        }
+
+        return null; // not found
+    }
+
+    public static String extractAfter7170(String hex) {
+        String target = "7170";
+
+        int index = hex.indexOf(target);
+        if (index == -1) {
+            return null; // not found
+        }
+
+        int start = index + target.length(); // exclude "7170"
+        int end = start + 112;
+
+        // safety check to avoid StringIndexOutOfBoundsException
+        if (end > hex.length()) {
+            return null; // or return hex.substring(start) if partial is acceptable
+        }
+
+        return hex.substring(start, end);
+    }
+
+    public static String extractTag91Value(String data) {
+        String tagWithLength = "910A";
+
+        int index = data.indexOf(tagWithLength);
+
+        if (index == -1) {
+            return null; // Tag not found
+        }
+
+        int start = index + tagWithLength.length();
+        int end = start + 20; // 10 bytes = 20 hex chars
+
+        // Safety check
+        if (end > data.length()) {
+            throw new IllegalArgumentException("Invalid data length for tag 91");
+        }
+
+        return data.substring(start, end);
+    }
+
+
 }

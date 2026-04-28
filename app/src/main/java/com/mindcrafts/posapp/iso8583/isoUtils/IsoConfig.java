@@ -24,6 +24,9 @@ public class IsoConfig {
     public static  String entryMode = "0070";
     public static String  entryMode_pin = "0071";
 
+    public static String entryModeContact = "0050";
+    public static String entryModeContactPin = "0051";
+
     public static String POS_condtion_code = "00";
 
     public  static String security_control = "0003207001900000";

@@ -131,6 +131,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/sales_rouned"
+
                 android:elevation="4dp"
                 android:padding="30dp"
                 android:paddingStart="52dp"

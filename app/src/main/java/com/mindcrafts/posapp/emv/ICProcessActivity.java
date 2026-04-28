@@ -35,6 +35,7 @@ import com.mindcrafts.posapp.databinding.ActivityEmvIcBinding;
 import com.mindcrafts.posapp.iso8583.builder.Batch;
 import com.mindcrafts.posapp.iso8583.builder.Sales;
 import com.mindcrafts.posapp.iso8583.isoUtils.IsoConfig;
+import com.mindcrafts.posapp.iso8583.isoUtils.IsoUtils;
 import com.mindcrafts.posapp.iso8583.parser.ISOParser;
 import com.mindcrafts.posapp.network.NetworkUtil;
 import com.mindcrafts.posapp.network.callback.NetworkCallback;
@@ -80,6 +81,8 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
     ActivityEmvIcBinding binding;
     String MID;
     String TID;
+
+    String raw_210;
     private android.app.AlertDialog removeCardDialog;
     NetworkCallback callback;
 
@@ -110,6 +113,8 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
     private  String PinBlock;
     private boolean goToSlip = false;
     private boolean isRfID = false;
+
+    private boolean contact_card = false;
     private AlertDialog mAppSelectDialog;
     private Map<String, String> configMap;
 
@@ -168,6 +173,7 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
                 case EMV_CONFIRM_CARD_NO:
 
                     if(!isRfID){
+                        contact_card = true;
                         importCardNoStatus(0);
                         binding.cardNumberContainer.setVisibility(View.VISIBLE);
                         String maskedNo = EmvUtil.maskCardNumber(mCardNo);
@@ -188,14 +194,18 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
                 case EMV_SHOW_PIN_PAD:
                     dismissLoadingDialog();
                     double value = Double.parseDouble(amount);
-                    if(isRfID && value < 3000){
+                    if(isRfID){
                         importPinInputStatus(0);
                     }else{
                         initPinPad();
                     }
                     break;
                 case EMV_ONLINE_PROCESS:
-                    mockRequestToServer();
+                    if(isRfID){
+                        mockRequestToServer();
+                    }else{
+                        mockRequestToServer();
+                    }
                     break;
                 case EMV_SIGNATURE:
                     importSignatureStatus(0);
@@ -265,13 +275,22 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
         cartProducts = intent.getStringExtra("cart");
         //amount = "3500.00";
         initData();
-        initView();
+        try{
+            initView();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
     }
 
-    private void initView() {
+    private void initView() throws RemoteException {
         mEMVOptV2 = MyApplication.app.emvOptV2;
         mPinPadOptV2 = MyApplication.app.pinPadOptV2;
         mReadCardOptV2 = MyApplication.app.readCardOptV2;
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("optOnlineRes", true);
+        mEMVOptV2.setTermParamEx(bundle);
 
        // mEditAmount = findViewById(R.id.edit_amount);
        // mTvShowInfo = findViewById(R.id.tv_info);
@@ -385,7 +404,7 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
                     "DF8123", "DF8124", "DF8125", "DF8126",
                     "DF811B", "DF811D", "DF8122", "DF8120", "DF8121","9F1D" };
             String[] valuesPayPass = {"E0", "F0", "08", "C8", "00", "00",
-                    "000000000000", "000002000000", "999999999999", "000000030000",
+                    "000000000000", "000025000000", "999999999999", "000000300000",
                     "B0", "02", "F45084800C", "F45084800C", "0000000000","6C6C800000000000"};
             mEMVOptV2.setTlvList(AidlConstantsV2.EMV.TLVOpCode.OP_PAYPASS, tagsPayPass, valuesPayPass);
 
@@ -1034,17 +1053,54 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
     private void importOnlineProcessStatus(int status) {
         LogUtil.e(Constant.TAG, "importOnlineProcessStatus status:" + status);
         try {
-            String[] tags = {"71", "72", "91", "8A", "89"};
-            String[] values = {"", "", "", "", ""};
-            byte[] out = new byte[1024];
-            int len = mEMVOptV2.importOnlineProcStatus(status, tags, values, out);
-            if (len < 0) {
-                LogUtil.e(Constant.TAG, "importOnlineProcessStatus error,code:" + len);
-            } else {
-                byte[] bytes = Arrays.copyOf(out, len);
-                String hexStr = ByteUtil.bytes2HexStr(bytes);
-                LogUtil.e(Constant.TAG, "importOnlineProcessStatus outData:" + hexStr);
+            var DE55 = resp210.get("Field_55");
+            if(DE55 != null){
+                String _91  = IsoUtils.extractTag91(DE55);
+                Log.d("DE91", _91);
+                String _71 = IsoUtils.extractAfter7170(DE55);
+                Log.d("DE7170", _71);
+                String[] tags = {"71", "72", "91", "8A", "89"};
+                String[] values = {_71, "",_91, "", ""};
+                byte[] out = new byte[1024];
+                int len = mEMVOptV2.importOnlineProcStatus(status, tags, values, out);
+                if (len < 0) {
+                    LogUtil.e(Constant.TAG, "importOnlineProcessStatus error,code:" + len);
+                } else {
+                    byte[] bytes = Arrays.copyOf(out, len);
+                    String hexStr = ByteUtil.bytes2HexStr(bytes);
+                    LogUtil.e(Constant.TAG, "importOnlineProcessStatus outData:" + hexStr);
+                }
+            }else{
+                String _91 = IsoUtils.extractTag91Value(raw_210);
+                
+                if(_91 != null){
+                    Log.d("91", _91);
+                    String[] tags = {"71", "72", "91", "8A", "89"};
+                    String[] values = {"", "",_91, "", ""};
+                    byte[] out = new byte[1024];
+                    int len = mEMVOptV2.importOnlineProcStatus(status, tags, values, out);
+                    if (len < 0) {
+                        LogUtil.e(Constant.TAG, "importOnlineProcessStatus error,code:" + len);
+                    } else {
+                        byte[] bytes = Arrays.copyOf(out, len);
+                        String hexStr = ByteUtil.bytes2HexStr(bytes);
+                        LogUtil.e(Constant.TAG, "importOnlineProcessStatus outData:" + hexStr);
+                    }
+                }else{
+                    String[] tags = {"71", "72", "91", "8A", "89"};
+                    String[] values = {"", "","", "", ""};
+                    byte[] out = new byte[1024];
+                    int len = mEMVOptV2.importOnlineProcStatus(status, tags, values, out);
+                    if (len < 0) {
+                        LogUtil.e(Constant.TAG, "importOnlineProcessStatus error,code:" + len);
+                    } else {
+                        byte[] bytes = Arrays.copyOf(out, len);
+                        String hexStr = ByteUtil.bytes2HexStr(bytes);
+                        LogUtil.e(Constant.TAG, "importOnlineProcessStatus outData:" + hexStr);
+                    }
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1072,7 +1128,7 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
                 }
                 Thread.sleep(1000);
                 // notice  ==  import the online result to SDK and end the process.
-                importOnlineProcessStatus(0);
+                //importOnlineProcessStatus(0);
             } catch (Exception e) {
                 e.printStackTrace();
                 importOnlineProcessStatus(-1);
@@ -1085,7 +1141,8 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
     /**
      * Read we interested tlv data
      */
-    private void getTlvData() {
+    private void
+    getTlvData() {
         try {
             String[] tagList = {
                     "DF02", "5F34", "9F06", "FF30", "FF31", "95", "9B", "9F36", "9F26",
@@ -1163,9 +1220,9 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
             pinBlock = PinBlock;
             if(isRfID){
                 double value = Double.parseDouble(amount);
-                if(value < 3000){
+                //if(value < 3000){
                     networkCall(map, PinBlock);
-                }else{
+              /*  }else{
                     if(pinBlock.isEmpty()){
                       runOnUiThread(new Runnable() {
                           @Override
@@ -1176,18 +1233,18 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
                     }else{
                         networkCall(map, PinBlock);
                     }
-                }
+                }*/
             }else {
-                if(pinBlock.isEmpty()){
+                /*if(pinBlock.isEmpty()){
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             showPinError();
                         }
-                    });
-                }else{
+                    });*/
+                //}else{
                     networkCall(map, PinBlock);
-                }
+                //}
             }
 
 
@@ -1215,32 +1272,36 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
 
 
     public void networkCall(Map<String, TLV> map, String pinBlock){
+        Log.d("PinBlock-BeforeCall", pinBlock);
         String pan  = map.get("5A").getValue();
+        if(mPinType == 1){
+            pinBlock = "";
+        }
         int type = SharedPrefHelper.getInstance(context).getMerchantType("mType");
         if(pan.contains("54197547") && type == 1 || pan.contains("559049001815") || pan.contains("22057700")){
             Sales builder = new Sales();
-            byte[] message200 = builder.create200(map, MID, TID, Objects.requireNonNullElse(pinBlock, ""));
+            byte[] message200 = builder.create200(map, MID, TID,pinBlock, isRfID);
             Log.d("message200", ByteUtil.bytes2HexStr(message200));
             NetworkUtil util = new NetworkUtil();
             util.HostCall(message200, callback);
         }else{
          if(pan.contains("52382103") && type == 2){
              Sales builder = new Sales();
-             byte[] message200 = builder.create200(map, MID, TID, Objects.requireNonNullElse(pinBlock, ""));
+             byte[] message200 = builder.create200(map, MID, TID,pinBlock,isRfID);
              Log.d("message200", ByteUtil.bytes2HexStr(message200));
              NetworkUtil util = new NetworkUtil();
              util.HostCall(message200, callback);
          }else{
              if(pan.contains("52871657") && type == 3){
                  Sales builder = new Sales();
-                 byte[] message200 = builder.create200(map, MID, TID, Objects.requireNonNullElse(pinBlock, ""));
+                 byte[] message200 = builder.create200(map, MID, TID,pinBlock,isRfID);
                  Log.d("message200", ByteUtil.bytes2HexStr(message200));
                  NetworkUtil util = new NetworkUtil();
                  util.HostCall(message200, callback);
              }else{
                if(type == 0){
                    Sales builder = new Sales();
-                   byte[] message200 = builder.create200(map, MID, TID, Objects.requireNonNullElse(pinBlock, ""));
+                   byte[] message200 = builder.create200(map, MID, TID,pinBlock,isRfID);
                    Log.d("message200", ByteUtil.bytes2HexStr(message200));
                    NetworkUtil util = new NetworkUtil();
                    util.HostCall(message200, callback);
@@ -1378,8 +1439,9 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
          @Override
          public void run() {
             String resp  = ByteUtil.bytes2HexStr(response);
-             // Log.d("server210", resp);
-             //String test = "003260000000200210203801000E8000000000000001011700050915020030303031303120202020202031323334353630303431313130303438";
+            Log.d("server210", resp);
+            raw_210 = resp;
+             //String test = "00B860000000200210203801000E80020000000000082515525904020200303136383536353731373931323230373431303032343230303031310126910A08CE1E42501D5625001271709F180441424344860D841E0000087FE58792AE20C815860D841E000008A1DF457774C5E831860D841E000008FC25F5ADD015C1F0860D841E000008798BB90BF22A8FC1860D841E0000088F17FF46D31C4512860D841E000008E5E349DD0BBB9F3C860D841E000008FFF6442472A6B7E2";
              Map<Integer, Integer> fields = new HashMap<>();
              fields.put(3, 2);
              fields.put(11, 4);
@@ -1390,16 +1452,21 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
              fields.put(38, 6);
              fields.put(39, 2);
              fields.put(41, 8);
+             fields.put(55, 126);
+
              resp210 = ISOParser.parseMessage(ByteUtil.hexStr2Bytes(resp), fields);
              LogUtil.d("message210", resp210.toString());
              if (Objects.equals(resp210.get("Field_39"), "3030")) {
                  binding.textView8.setText("ٹرانزیکشن مکمل ہو گئی، کارڈ ہٹا لیں۔");
                  binding.textView9.setText("Transaction completed, remove the card");
                  LogUtil.d("Transaction", "successful");
+
+
+
                  importOnlineProcessStatus(0);
                  createbatch();
              } else {
-                 importOnlineProcessStatus(0);
+                 importOnlineProcessStatus(1);
                  String rawCode  = resp210.get("Field_39");
                  String code  = Utility.decodeAsciiHex(rawCode);
                  String Reason = Utility.getResponseReason(code);
@@ -1487,6 +1554,7 @@ public class ICProcessActivity extends BaseAppCompatActivity implements NetworkC
             entryMode = IsoConfig.entryMode_pin;
         }
         String cardScheme = TLVUtil.getCardTypeByAID(TLVMap.get("4F").getValue());
+
         Tran = new Transaction(
                 msg_320,
                 MID,
