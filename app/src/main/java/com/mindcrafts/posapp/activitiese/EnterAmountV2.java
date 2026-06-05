@@ -1,7 +1,9 @@
 package com.mindcrafts.posapp.activitiese;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,8 @@ import com.mindcrafts.posapp.storage.SharedPrefHelper;
 public class EnterAmountV2 extends AppCompatActivity {
    ActivityEnterAmountV2Binding binding;
    String rawAmount;
+
+   Context context;
     private StringBuilder amountBuilder = new StringBuilder();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,7 @@ public class EnterAmountV2 extends AppCompatActivity {
         binding.tvMid.setText("MID: " + SharedPrefHelper.getInstance(this).getMID("MID"));
         binding.tvTid.setText("TID: " + SharedPrefHelper.getInstance(this).getTID("TID"));
          //
+        context = this;
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -46,15 +51,23 @@ public class EnterAmountV2 extends AppCompatActivity {
             public void onClick(View v) {
 
                 String amount  = binding.amnt.getText().toString();
-                if(!amount.equals("0.00")){
-                    Intent intent = new Intent(EnterAmountV2.this, ICProcessActivity.class);
-                    intent.putExtra("cart", "");
-                    intent.putExtra("amount", amount);
-                    startActivity(intent);
-                    finish();
+
+                String disputedBatch = SharedPrefHelper.getInstance(getBaseContext()).getDisputedBatch("d_batch");
+                Log.d("d_batch", disputedBatch);
+                if(disputedBatch.equals("1")){
+                    Toast.makeText(getBaseContext(), "Please settle the batch first - Terminal Locked", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(getBaseContext(), "Please enter amount", Toast.LENGTH_SHORT).show();
+                    if(!amount.equals("0.00")){
+                        Intent intent = new Intent(EnterAmountV2.this, ICProcessActivity.class);
+                        intent.putExtra("cart", "");
+                        intent.putExtra("amount", amount);
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        Toast.makeText(getBaseContext(), "Please enter amount", Toast.LENGTH_SHORT).show();
+                    }
                 }
+
 
             }
         });

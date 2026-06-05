@@ -81,7 +81,7 @@ public class Home extends AppCompatActivity {
         //
         binding.tvMid.setText("MID: " + SharedPrefHelper.getInstance(this).getMID("MID"));
         binding.tvTid.setText("TID: " + SharedPrefHelper.getInstance(this).getTID("TID"));
-        binding.mName.setText("Hi " + SharedPrefHelper.getInstance(this).getMerchant("merchant"));
+        binding.mName.setText("Hi: " + SharedPrefHelper.getInstance(this).getMerchant("merchant"));
         binding.timeStamp.setText(Utility.getCurrentTimestamp());
         //
         initMerchantType();

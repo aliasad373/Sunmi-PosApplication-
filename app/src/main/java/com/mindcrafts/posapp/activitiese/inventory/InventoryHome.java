@@ -115,18 +115,28 @@ public class InventoryHome extends AppCompatActivity implements InventoryCallbac
                 if(cartProducts.isEmpty()){
                     Toast.makeText(InventoryHome.this, "Please first add to cart for purchase", Toast.LENGTH_SHORT).show();
                 }else{
-                    Gson gson = new Gson();
-                    String cartData = gson.toJson(cartProducts);
-                    double total = 0.0;
-                    for (CartProduct p : cartProducts) {
-                        total += p.getCount() * p.getPrice();
+                    String disputedBatch = SharedPrefHelper.getInstance(getBaseContext()).getDisputedBatch("d_batch");
+                    Log.d("d_batch", disputedBatch);
+                    //
+                    if (disputedBatch.equals("1")){
+                        //
+                        Toast.makeText(getBaseContext(), "Please settle the batch first-Terminal Locked", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Gson gson = new Gson();
+                        String cartData = gson.toJson(cartProducts);
+                        double total = 0.0;
+                        for (CartProduct p : cartProducts) {
+                            total += p.getCount() * p.getPrice();
+                        }
+                        String totalAmnt = String.valueOf(total);
+                        Intent intent = new Intent(InventoryHome.this, ICProcessActivity.class);
+                        intent.putExtra("cart", cartData);
+                        intent.putExtra("amount", totalAmnt);
+                        startActivity(intent);
+                        finish();
                     }
-                    String totalAmnt = String.valueOf(total);
-                    Intent intent = new Intent(InventoryHome.this, ICProcessActivity.class);
-                    intent.putExtra("cart", cartData);
-                    intent.putExtra("amount", totalAmnt);
-                    startActivity(intent);
-                    finish();
+
+                    //
                 }
             }
         });

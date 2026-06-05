@@ -229,10 +229,11 @@ public class RunSettlement extends AppCompatActivity implements AllTransactionAd
                 Log.d("Settlement", "Go for force settle");
 //
 
-                instance.userDao().updateSStatusWhere();
-                int batch = SharedPrefHelper.getInstance(this).getBatch("batch");
-                batch = batch + 1;
-                SharedPrefHelper.getInstance(this).saveBatchNo("batch", batch);
+               // instance.userDao().updateSStatusWhere();
+                //int batch = SharedPrefHelper.getInstance(this).getBatch("batch");
+                //batch = batch + 1;
+                //SharedPrefHelper.getInstance(this).saveBatchNo("batch", batch);
+                SharedPrefHelper.getInstance(this).saveDisputedBatch("d_batch", "1");
                 runOnUiThread(() -> {
                   LoadTransactions();
                   binding.progressSett.setVisibility(View.GONE);

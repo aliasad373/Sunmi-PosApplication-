@@ -111,4 +111,11 @@ public class SharedPrefHelper {
     public int getMerchantType (String key){return sharedPreferences.getInt(key, 0);
     }
 
+    public void saveDisputedBatch(String key, String value){
+        editor.putString(key, value).apply();
+    }
+
+    public String getDisputedBatch(String key){
+        return sharedPreferences.getString(key, "0");
+    }
 }
