@@ -406,6 +406,33 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/llArqc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llAuthRNN">
+
+                <TextView
+                    android:id="@+id/labelArqc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ARQC :"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/txtArqc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="@dimen/_10sdp" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/txtPinVerified"
@@ -414,9 +441,10 @@
                 android:layout_marginTop="@dimen/_4sdp"
                 android:gravity="center"
                 android:text="PIN VERIFIED"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/llAuthRNN" />
+                app:layout_constraintTop_toBottomOf="@+id/llArqc" />
 
             <TextView
                 android:id="@+id/txtMessage"
@@ -424,7 +452,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:gravity="center"
-                android:text="Thankyou For Shopping!"
+                android:text="Customer Copy"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtPinVerified" />

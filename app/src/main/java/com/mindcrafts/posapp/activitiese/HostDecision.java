@@ -1,7 +1,6 @@
 package com.mindcrafts.posapp.activitiese;
 
 import static com.mindcrafts.posapp.app.BaseAppCompatActivity.TAG;
-import static com.mindcrafts.posapp.utils.Utility.generateOfflineId;
 import static com.mindcrafts.posapp.utils.Utility.showToast;
 
 import android.content.Context;
@@ -15,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.RequiresApi;
@@ -29,50 +27,25 @@ import com.google.gson.reflect.TypeToken;
 import com.mindcrafts.posapp.R;
 import com.mindcrafts.posapp.activitiese.inventory.models.CartProduct;
 import com.mindcrafts.posapp.activitiese.inventory.models.InventoryPurchaseReq;
-import com.mindcrafts.posapp.activitiese.inventory.models.InventoryResponse;
-import com.mindcrafts.posapp.activitiese.inventory.models.LiveStockResponse;
-import com.mindcrafts.posapp.activitiese.inventory.models.PurchaseReq;
 import com.mindcrafts.posapp.activitiese.inventory.network.InventoryApi;
 import com.mindcrafts.posapp.activitiese.inventory.network.InventoryClient;
 import com.mindcrafts.posapp.app.MyApplication;
-import com.mindcrafts.posapp.database.DAO;
-import com.mindcrafts.posapp.database.DBInstance;
 import com.mindcrafts.posapp.database.entity.Transaction;
 import com.mindcrafts.posapp.databinding.ActivityHostDecisionBinding;
-import com.mindcrafts.posapp.iso8583.builder.Batch;
-import com.mindcrafts.posapp.iso8583.builder.Sales;
-import com.mindcrafts.posapp.iso8583.isoUtils.IsoConfig;
 import com.mindcrafts.posapp.iso8583.isoUtils.IsoUtils;
-import com.mindcrafts.posapp.iso8583.parser.ISOParser;
-import com.mindcrafts.posapp.network.NetworkUtil;
 import com.mindcrafts.posapp.network.callback.NetworkCallback;
 import com.mindcrafts.posapp.storage.SharedPrefHelper;
-import com.mindcrafts.posapp.utils.ByteUtil;
-import com.mindcrafts.posapp.utils.LoadingDialog;
 import com.mindcrafts.posapp.utils.LogUtil;
 import com.mindcrafts.posapp.utils.TLV;
-import com.mindcrafts.posapp.utils.TLVUtil;
 import com.mindcrafts.posapp.utils.Utility;
 
 import com.mindcrafts.posapp.view.LoadingDialogNew;
 import com.sunmi.peripheral.printer.InnerResultCallback;
 
-import org.w3c.dom.Text;
-
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Type;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -128,7 +101,7 @@ public class HostDecision extends AppCompatActivity  {
         if(!cartData.isEmpty()){
             callForInventoryPurchase(cartData);
         }
-        readyTheSlip(Tran);
+        readyTheSlip(Tran, 0);
     }
     public void save_data(Transaction Tran) {
         new Thread(() -> {
@@ -150,6 +123,7 @@ public class HostDecision extends AppCompatActivity  {
                     binding.txtRRN.setText(IsoUtils.hexToAscii(Tran.RRN));
                     binding.txtBatch.setText(IsoUtils.padToSix(Tran.batchNumber));
                     binding.txtAuthNo.setText(IsoUtils.hexToAscii(Tran.authCode));
+                    bindArqc(binding.llArqc, binding.txtArqc, Tran.cryptogaram);
 //                    dialog.dismiss();
                     //Toast.makeText(HostDecision.this, "Inserted!", Toast.LENGTH_SHORT).show();
                     // update RecyclerView or TextView here
@@ -166,7 +140,7 @@ public class HostDecision extends AppCompatActivity  {
                     binding.btnPrint.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            readyTheSlip(Tran);
+                            readyTheSlip(Tran, 1);
                         }
                     });
                 });
@@ -175,7 +149,7 @@ public class HostDecision extends AppCompatActivity  {
 
     }
 
-    private void readyTheSlip(Transaction Tran) {
+    private void readyTheSlip(Transaction Tran, int i) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.slip_print, null);
 
@@ -205,6 +179,11 @@ public class HostDecision extends AppCompatActivity  {
         auth.setText(IsoUtils.hexToAscii(Tran.authCode));
         TextView merchant = view.findViewById(R.id.txtMerchantId);
         merchant.setText(Tran.MID);
+        bindArqc(view.findViewById(R.id.llArqc), view.findViewById(R.id.txtArqc), Tran.cryptogaram);
+        TextView message  = view.findViewById(R.id.txtMessage);
+        if(i == 1){
+            message.setText("Merchant Copy");
+        }
         // Measure and layout the view
         view.measure(
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
@@ -220,12 +199,26 @@ public class HostDecision extends AppCompatActivity  {
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
 
-        printBitmap(bitmap);
+        printBitmap(bitmap, i);
     }
 
 
+    /** Show ARQC (EMV 9F26) when present; omit the row if missing (e.g. magstripe). */
+    private void bindArqc(View row, TextView valueView, String cryptogram) {
+        if (row == null || valueView == null) {
+            return;
+        }
+        if (cryptogram != null && !cryptogram.trim().isEmpty()) {
+            valueView.setText(cryptogram.trim().toUpperCase());
+            row.setVisibility(View.VISIBLE);
+        } else {
+            valueView.setText("");
+            row.setVisibility(View.GONE);
+        }
+    }
+
     //printing services
-    private void printBitmap(Bitmap content) {
+    private void printBitmap(Bitmap content, int i) {
         try {
             if (MyApplication.app.sunmiPrinterService == null) {
                 showToast("Print not supported");
@@ -241,6 +234,12 @@ public class HostDecision extends AppCompatActivity  {
                 public void onRunResult(boolean isSuccess) throws RemoteException {
                     //addEndTime("printBitmap()");
                     LogUtil.e(TAG, "onRunResult-->isSuccess:" + isSuccess);
+                    if(i == 1){
+                        Intent intent = new Intent(HostDecision.this, Home.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
                     //showSpendTime();
                 }
 

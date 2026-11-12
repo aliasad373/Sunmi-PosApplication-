@@ -3,7 +3,9 @@ package com.mindcrafts.posapp.activitiese.reprint;
 import static com.mindcrafts.posapp.app.BaseAppCompatActivity.TAG;
 import static com.mindcrafts.posapp.utils.Utility.showToast;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -117,6 +119,7 @@ public class ReprintActivity extends AppCompatActivity {
                         binding.txtInvoice.setText(transaction.TC);
                         binding.txtMerchantId.setText(transaction.MID);
                         binding.txtTransactionId.setText(transaction.TID);
+                        bindArqc(binding.llArqc, binding.txtArqc, transaction.cryptogaram);
                     }
                 });
             }
@@ -152,6 +155,7 @@ public class ReprintActivity extends AppCompatActivity {
         auth.setText(IsoUtils.hexToAscii(Tran.authCode));
         TextView merchant = view.findViewById(R.id.txtMerchantId);
         merchant.setText(Tran.MID);
+        bindArqc(view.findViewById(R.id.llArqc), view.findViewById(R.id.txtArqc), Tran.cryptogaram);
         // Measure and layout the view
         view.measure(
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
@@ -170,6 +174,20 @@ public class ReprintActivity extends AppCompatActivity {
         printBitmap(bitmap);
     }
 
+    /** Show ARQC (EMV 9F26) when present; omit the row if missing (e.g. magstripe). */
+    private void bindArqc(View row, TextView valueView, String cryptogram) {
+        if (row == null || valueView == null) {
+            return;
+        }
+        if (cryptogram != null && !cryptogram.trim().isEmpty()) {
+            valueView.setText(cryptogram.trim().toUpperCase());
+            row.setVisibility(View.VISIBLE);
+        } else {
+            valueView.setText("");
+            row.setVisibility(View.GONE);
+        }
+    }
+
     private void printBitmap(Bitmap content) {
         try {
             if (MyApplication.app.sunmiPrinterService == null) {
@@ -186,6 +204,13 @@ public class ReprintActivity extends AppCompatActivity {
                 public void onRunResult(boolean isSuccess) throws RemoteException {
                     //addEndTime("printBitmap()");
                     LogUtil.e(TAG, "onRunResult-->isSuccess:" + isSuccess);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showPrintDialogue();
+                        }
+                    });
+
                     //showSpendTime();
                 }
 
@@ -193,6 +218,7 @@ public class ReprintActivity extends AppCompatActivity {
                 public void onReturnString(String result) throws RemoteException {
                     //addEndTime("printBitmap()");
                     LogUtil.e(TAG, "onReturnString-->result:" + result);
+
                     //showSpendTime();
                 }
 
@@ -215,6 +241,29 @@ public class ReprintActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void showPrintDialogue() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // 1. Set the Dialog Title and Message
+        builder.setTitle("Success")
+                .setMessage("Slip reprinted successfully")
+                .setCancelable(false); // Prevents closing the dialog by clicking outside of it
+
+        // 2. Set the "OK" button and its action
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Dismiss the dialog
+                finish();
+                dialog.dismiss();
+            }
+        });
+
+        // 3. Create and display the dialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 }
